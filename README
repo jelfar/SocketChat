@@ -1,3 +1,5 @@
 SocketChat
 
 An iOS chat application using Swift and SocketIO for real-time, bidirectional web socket communication.
+
+Source: http://www.appcoda.com/socket-io-chat-app/
