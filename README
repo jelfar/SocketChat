@@ -1,0 +1,3 @@
+SocketChat
+
+An iOS chat application using Swift and SocketIO for real-time, bidirectional web socket communication.
