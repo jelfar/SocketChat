@@ -38,6 +38,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.handleKeyboardDidHideNotification(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.handleConnectedUserUpdateNotification(_:)), name: NSNotification.Name("userWasConnectedNotification"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.handleDisconnectedUserUpdateNotification(_:)), name: NSNotification.Name("userWasDisconnectedNotification"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.handleUserTypingNotification(_:)), name: NSNotification.Name("userTypingNotification"), object: nil)
         
         
         let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(ChatViewController.dismissKeyboard))
@@ -191,7 +192,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func handleConnectedUserUpdateNotification(_ notification: NSNotification) {
-        print("this should work")
         let connectedUserInfo = notification.object as! [String: AnyObject];
         let connectedUserNickname = connectedUserInfo["nickname"] as? String
         lblNewsBanner.text = "User \(connectedUserNickname!) just connected!"
@@ -199,10 +199,30 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func handleDisconnectedUserUpdateNotification(_ notification: NSNotification) {
-        print("yea i swear")
         let disconnectedUserNickname = notification.object as! String
         lblNewsBanner.text = "User \(disconnectedUserNickname) has left."
         showBannerLabelAnimated()
+    }
+    
+    func handleUserTypingNotification(_ notification: Notification) {
+        if let typingUsersDictionary = notification.object as? [String: AnyObject] {
+            var names = ""
+            var totalTypingUsers = 0
+            for (typingUser, _) in typingUsersDictionary {
+                if typingUser != nickname {
+                    names = (names == "") ? typingUser : "\(names), \(typingUser)"
+                    totalTypingUsers += 1
+                }
+            }
+            
+            if totalTypingUsers > 0 {
+                let verb = (totalTypingUsers == 1) ? "is" : "are"
+                lblOtherUserActivityStatus.text = "\(names) \(verb) now typing a message..."
+                lblOtherUserActivityStatus.isHidden = false
+            } else {
+                lblOtherUserActivityStatus.isHidden = true
+            }
+        }
     }
     
     
@@ -245,6 +265,14 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         return true
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if(textView.text.characters.count > 0) {
+            SocketIOManager.sharedInstance.sendStartTypingMessage(nickname: self.nickname)
+        } else {
+            SocketIOManager.sharedInstance.sendStopTypingMessage(nickname: self.nickname)
+        }
     }
 
     
