@@ -31,6 +31,7 @@
 		0517E6B01E49295400B54169 /* SocketTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0517E6981E49295400B54169 /* SocketTypes.swift */; };
 		0517E6B11E49295400B54169 /* SSLSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0517E6991E49295400B54169 /* SSLSecurity.swift */; };
 		0517E6B21E49295400B54169 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0517E69A1E49295400B54169 /* WebSocket.swift */; };
+		0517E6B41E492DBB00B54169 /* SocketIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0517E6B31E492DBB00B54169 /* SocketIOManager.swift */; };
 		C075D71D1C5E0E81009F9044 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C075D71C1C5E0E81009F9044 /* AppDelegate.swift */; };
 		C075D7221C5E0E81009F9044 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C075D7201C5E0E81009F9044 /* Main.storyboard */; };
 		C075D7241C5E0E81009F9044 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C075D7231C5E0E81009F9044 /* Assets.xcassets */; };
@@ -69,6 +70,7 @@
 		0517E6981E49295400B54169 /* SocketTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketTypes.swift; sourceTree = "<group>"; };
 		0517E6991E49295400B54169 /* SSLSecurity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSLSecurity.swift; sourceTree = "<group>"; };
 		0517E69A1E49295400B54169 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
+		0517E6B31E492DBB00B54169 /* SocketIOManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketIOManager.swift; sourceTree = "<group>"; };
 		C075D7191C5E0E81009F9044 /* SocketChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SocketChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C075D71C1C5E0E81009F9044 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C075D7211C5E0E81009F9044 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 				C075D7331C5E0EC9009F9044 /* Custom Cells */,
 				C075D72E1C5E0E96009F9044 /* View Controllers */,
 				C075D71C1C5E0E81009F9044 /* AppDelegate.swift */,
+				0517E6B31E492DBB00B54169 /* SocketIOManager.swift */,
 				C075D7201C5E0E81009F9044 /* Main.storyboard */,
 				C075D7231C5E0E81009F9044 /* Assets.xcassets */,
 				C075D7251C5E0E81009F9044 /* LaunchScreen.storyboard */,
@@ -210,6 +213,7 @@
 				TargetAttributes = {
 					C075D7181C5E0E81009F9044 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 42PBTM6BUX;
 						LastSwiftMigration = 0820;
 					};
 				};
@@ -268,6 +272,7 @@
 				0517E6AB1E49295400B54169 /* SocketIOClientStatus.swift in Sources */,
 				0517E69B1E49295400B54169 /* SocketAckEmitter.swift in Sources */,
 				0517E6AC1E49295400B54169 /* SocketLogger.swift in Sources */,
+				0517E6B41E492DBB00B54169 /* SocketIOManager.swift in Sources */,
 				0517E6AF1E49295400B54169 /* SocketStringReader.swift in Sources */,
 				0517E6AD1E49295400B54169 /* SocketPacket.swift in Sources */,
 				0517E6A11E49295400B54169 /* SocketEnginePacketType.swift in Sources */,
@@ -394,6 +399,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 42PBTM6BUX;
 				INFOPLIST_FILE = SocketChat/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.appcoda.SocketChat;
@@ -406,6 +412,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 42PBTM6BUX;
 				INFOPLIST_FILE = SocketChat/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.appcoda.SocketChat;

@@ -42,6 +42,9 @@ class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDat
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        if self.nickname == nil {
+            self.askForNickname()
+        }
     }
     
     
@@ -68,7 +71,17 @@ class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDat
     // MARK: IBAction Methods
     
     @IBAction func exitChat(_ sender: AnyObject) {
-        
+        SocketIOManager.sharedInstance.exitChatWithNickname(nickname: self.nickname, completionHandler: {
+            () -> Void in
+            DispatchQueue.global(qos: .userInitiated).async {
+                DispatchQueue.main.async {
+                    self.nickname = nil
+                    self.users .removeAll()
+                    self.tblUserList.isHidden = true
+                    self.askForNickname()
+                }
+            }
+        })
     }
 
     
@@ -88,6 +101,34 @@ class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDat
         tblUserList.tableFooterView = UIView(frame: CGRect.zero)
     }
     
+    func askForNickname() {
+        let alertController = UIAlertController(title: "Socket Chat", message: "Enter your nickname:", preferredStyle: UIAlertControllerStyle.alert)
+        alertController.addTextField(configurationHandler: nil)
+        let OKAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default) {
+            (action) -> Void in
+            if let textfield = alertController.textFields?[0], textfield.text?.characters.count != 0 {
+                self.nickname = textfield.text
+                
+                SocketIOManager.sharedInstance.connectToServerWithNickname(nickname: self.nickname, completionHandler: {
+                    (userList) -> Void in
+                    DispatchQueue.global(qos: .userInitiated).async {
+                        DispatchQueue.main.async {
+                            if userList != nil {
+                                self.users = userList!
+                                self.tblUserList.reloadData()
+                                self.tblUserList.isHidden = false
+                            }
+                        }
+                    }
+                })
+            } else {
+                self.askForNickname()
+            }
+        }
+        
+        alertController.addAction(OKAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
     
     // MARK: UITableView Delegate and Datasource methods
     
@@ -103,7 +144,9 @@ class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "idCellUser", for: indexPath) as! UserCell
-        
+        cell.textLabel?.text = users[indexPath.row]["nickname"] as? String
+        cell.detailTextLabel?.text = (users[indexPath.row]["isConnected"] as! Bool) ? "Online" : "Offline"
+        cell.detailTextLabel?.textColor = (users[indexPath.row]["isConnected"] as! Bool) ? UIColor.green : UIColor.red;
         return cell
     }
     
