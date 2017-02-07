@@ -31,6 +31,8 @@ class SocketIOManager: NSObject {
             (dataArray, ack) -> Void in
             completionHandler(dataArray[0] as? [[String: AnyObject]])
         }
+        
+        listenForOtherMessages()
     }
     
     func exitChatWithNickname(nickname: String, completionHandler: () -> Void) {
@@ -50,6 +52,18 @@ class SocketIOManager: NSObject {
             messageDictionary["message"] = dataArray[1] as AnyObject?
             messageDictionary["date"] = dataArray[2] as AnyObject?
             completionHandler(messageDictionary)
+        }
+    }
+    
+    private func listenForOtherMessages() {
+        socket.on("userConnectUpdate") {
+            (dataArray, socketAck) -> Void in
+            NotificationCenter.default.post(name: Notification.Name("userWasConnectedNotification"), object: dataArray[0] as! [String: AnyObject])
+        }
+        
+        socket.on("userExitUpdate") {
+            (dataArray, socketAck) -> Void in
+            NotificationCenter.default.post(name: Notification.Name("userWasDisconnectedNotification"), object: dataArray[0] as! String)
         }
     }
 }

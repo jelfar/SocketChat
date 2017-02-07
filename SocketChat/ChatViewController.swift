@@ -36,6 +36,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.handleKeyboardDidShowNotification(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.handleKeyboardDidHideNotification(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.handleConnectedUserUpdateNotification(_:)), name: NSNotification.Name("userWasConnectedNotification"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.handleDisconnectedUserUpdateNotification(_:)), name: NSNotification.Name("userWasDisconnectedNotification"), object: nil)
         
         
         let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(ChatViewController.dismissKeyboard))
@@ -188,6 +190,20 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
+    func handleConnectedUserUpdateNotification(_ notification: NSNotification) {
+        print("this should work")
+        let connectedUserInfo = notification.object as! [String: AnyObject];
+        let connectedUserNickname = connectedUserInfo["nickname"] as? String
+        lblNewsBanner.text = "User \(connectedUserNickname!) just connected!"
+        showBannerLabelAnimated();
+    }
+    
+    func handleDisconnectedUserUpdateNotification(_ notification: NSNotification) {
+        print("yea i swear")
+        let disconnectedUserNickname = notification.object as! String
+        lblNewsBanner.text = "User \(disconnectedUserNickname) has left."
+        showBannerLabelAnimated()
+    }
     
     
     // MARK: UITableView Delegate and Datasource Methods
